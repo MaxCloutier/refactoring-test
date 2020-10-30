@@ -20,15 +20,12 @@ export class GildedRose {
 
   updateQuality() {
     // Using .map to make it cleaner and I won't need to carry over this.items through the loop
-    this.items = this.items.map((item) => {
-      const { name } = item
-
+    this.items = this.items.map(({ name, sellIn, quality}) => {
       // Sulfuras, Hand of Ragnaros never changes so no need to go any further
       if (name === 'Sulfuras, Hand of Ragnaros') {
-        return item
+        return { name, sellIn, quality}
       }
 
-      let { sellIn, quality } = item
       sellIn = sellIn - 1
 
       // Default for normal items
@@ -37,6 +34,7 @@ export class GildedRose {
       // a switch seem more appropriate and easy to read to handle this kind of logic
       switch (name) {
         case 'Conjured Mana Cake':
+          // "Conjured" items degrade in Quality twice as fast as normal items
           qualityChange = qualityChange * 2
           break;
         case 'Aged Brie':
