@@ -172,4 +172,27 @@ describe('Gilded Rose', function () {
 
     tests.forEach(runTests);
   });
+
+  describe('Sulfuras, Hand of Ragnaros', function () {
+    // quality always 80
+    // sellIn never changes
+
+    const tests = [
+      {
+        item: {
+          name: "Sulfuras, Hand of Ragnaros",
+          sellIn: 15,
+          quality: 80,
+        },
+        expectedResultsByDay: [
+          {sellIn: 15, quality: 80},
+          {sellIn: 15, quality: 80},
+          {sellIn: 15, quality: 80},
+          {sellIn: 15, quality: 80}
+        ]
+      }
+    ];
+
+    tests.forEach(runTests);
+  });
 });
