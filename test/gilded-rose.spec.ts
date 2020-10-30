@@ -202,7 +202,7 @@ describe('Gilded Rose', function () {
     // quality never < 0
 
     // TODO uncomment when script supports it
-    /*const tests = [
+    const tests = [
       {
         item: {
           name: "Conjured Mana Cake",
@@ -218,6 +218,6 @@ describe('Gilded Rose', function () {
       }
     ];
 
-    tests.forEach(runTests);*/
+    tests.forEach(runTests);
   });
 });

@@ -36,6 +36,9 @@ export class GildedRose {
 
       // a switch seem more appropriate and easy to read to handle this kind of logic
       switch (name) {
+        case 'Conjured Mana Cake':
+          qualityChange = qualityChange * 2
+          break;
         case 'Aged Brie':
           qualityChange = sellIn < 0 ? 2 : 1
           break;
