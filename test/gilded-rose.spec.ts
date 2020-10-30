@@ -52,7 +52,7 @@ describe('Gilded Rose', function () {
   //    Quality drops to 0 after the concert
   //  - "Conjured" items degrade in Quality twice as fast as normal items
 
-  describe('General items', function () {
+  describe('Normal items', function () {
     // -1 to quality and sellIn each day
     // -2 to quality when sellIn < 0
     // quality never < 0
@@ -194,5 +194,30 @@ describe('Gilded Rose', function () {
     ];
 
     tests.forEach(runTests);
+  });
+
+  describe('Conjured Mana Cake', function () {
+    // -2 to quality and sellIn each day
+    // -4 to quality when sellIn < 0
+    // quality never < 0
+
+    // TODO uncomment when script supports it
+    /*const tests = [
+      {
+        item: {
+          name: "Conjured Mana Cake",
+          sellIn: 15,
+          quality: 20,
+        },
+        expectedResultsByDay: [
+          {sellIn: 14, quality: 18},
+          {sellIn: 13, quality: 16},
+          {sellIn: 12, quality: 14},
+          {sellIn: 11, quality: 12}
+        ]
+      }
+    ];
+
+    tests.forEach(runTests);*/
   });
 });
