@@ -26,30 +26,21 @@ export class GildedRose {
       if (name === 'Sulfuras, Hand of Ragnaros') {
         return item
       }
+      let qualityChange = -1
 
       // a switch seem more appropriate and easy to read to handle this kind of logic
       switch (name) {
         case 'Aged Brie':
-          if (item.quality < 50) {
-            item.quality = item.quality + 1
-          }
+          qualityChange = 1
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
-          if (item.quality < 50) {
-            item.quality = item.quality + 1
+          qualityChange = 1
 
-            if (item.sellIn < 11) {
-              item.quality = item.quality + 1
-            }
-            if (item.sellIn < 6) {
-                item.quality = item.quality + 1
-            }
+          if (item.sellIn < 11) {
+            qualityChange = 2
           }
-          break;
-        default:
-          // Normal items
-          if (item.quality > 0) {
-            item.quality = item.quality - 1
+          if (item.sellIn < 6) {
+            qualityChange = 3
           }
           break;
       }
@@ -60,20 +51,24 @@ export class GildedRose {
         // again, a switch seem more appropriate and easy to read to handle this kind of logic
         switch (name) {
           case 'Aged Brie':
-            if (item.quality < 50) {
-              item.quality = item.quality + 1
-            }
+            qualityChange++
             break;
           case 'Backstage passes to a TAFKAL80ETC concert':
-            item.quality = 0
+            qualityChange = -item.quality
             break;
           default:
             // Normal items
-            if (item.quality > 0) {
-              item.quality = item.quality - 1
-            }
+            qualityChange--
             break;
         }
+      }
+
+      item.quality = item.quality + qualityChange
+
+      if (item.quality > 50) {
+        item.quality = 50
+      } else if (item.quality < 0) {
+        item.quality = 0
       }
 
       return item
