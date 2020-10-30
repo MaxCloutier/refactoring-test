@@ -21,7 +21,6 @@ export class GildedRose {
   updateQuality() {
     // Using .map to make it cleaner and I won't need to carry over this.items through the loop
     this.items = this.items.map((item) => {
-      let { sellIn, quality } = item
       const { name } = item
 
       // Sulfuras, Hand of Ragnaros never changes so no need to go any further
@@ -29,6 +28,7 @@ export class GildedRose {
         return item
       }
 
+      let { sellIn, quality } = item
       sellIn = sellIn - 1
 
       // Default for normal items
@@ -57,6 +57,7 @@ export class GildedRose {
           break;
       }
 
+      // update quality, if numbers are negative they'll be substracted
       quality = quality + qualityChange
 
       // quality can never be more than 50 or lower than 0 so lets just fix it here
