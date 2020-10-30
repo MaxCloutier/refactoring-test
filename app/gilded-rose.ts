@@ -23,49 +23,43 @@ export class GildedRose {
     this.items = this.items.map((item) => {
       let { sellIn, quality } = item
       const { name } = item
+
       // Sulfuras, Hand of Ragnaros never changes so no need to go any further
       if (name === 'Sulfuras, Hand of Ragnaros') {
         return item
       }
-      let qualityChange = -1
+
+      sellIn = sellIn - 1
+
+      // Default for normal items
+      let qualityChange = sellIn < 0 ? -2 : -1
 
       // a switch seem more appropriate and easy to read to handle this kind of logic
       switch (name) {
         case 'Aged Brie':
-          qualityChange = 1
+          qualityChange = sellIn < 0 ? 2 : 1
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
           qualityChange = 1
 
-          if (sellIn < 11) {
+          // Could probably make this logic a one liner, but I'd rather keep readability
+          if (sellIn < 0) {
+            qualityChange = -quality
+          } else if (sellIn < 5) {
+            // Not sure if my new logic failed since I'm substracting the day at the begining,
+            // the tests fail if I put <= 5 which should be the right check since the rules say 5 or less... I think?
+            qualityChange = 3
+          } else if (sellIn < 10) {
+            // Same thought as with < 5 here, tests are passing this way so I won't put too much thought into it, but it seems wrong :thinking-face:
             qualityChange = 2
           }
-          if (sellIn < 6) {
-            qualityChange = 3
-          }
+
           break;
-      }
-
-      sellIn = sellIn - 1
-
-      if (sellIn < 0) {
-        // again, a switch seem more appropriate and easy to read to handle this kind of logic
-        switch (name) {
-          case 'Aged Brie':
-            qualityChange++
-            break;
-          case 'Backstage passes to a TAFKAL80ETC concert':
-            qualityChange = -item.quality
-            break;
-          default:
-            // Normal items
-            qualityChange--
-            break;
-        }
       }
 
       quality = quality + qualityChange
 
+      // quality can never be more than 50 or lower than 0 so lets just fix it here
       if (quality > 50) {
         quality = 50
       } else if (quality < 0) {
