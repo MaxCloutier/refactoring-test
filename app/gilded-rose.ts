@@ -27,43 +27,55 @@ export class GildedRose {
         return item
       }
 
-      if (name != 'Aged Brie' && name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (item.quality > 0) {
-          item.quality = item.quality - 1
-        }
-      } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1
-          if (name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (item.sellIn < 11) {
-              if (item.quality < 50) {
-                item.quality = item.quality + 1
-              }
-            }
-            if (item.sellIn < 6) {
-              if (item.quality < 50) {
-                item.quality = item.quality + 1
-              }
-            }
-          }
-        }
-      }
-      item.sellIn = item.sellIn - 1;
-      if (item.sellIn < 0) {
-        if (name != 'Aged Brie') {
-          if (name != 'Backstage passes to a TAFKAL80ETC concert') {
-            if (item.quality > 0) {
-              item.quality = item.quality - 1
-            }
-          } else {
-            item.quality = item.quality - item.quality
-          }
-        } else {
+      // a switch seem more appropriate and easy to read to handle this kind of logic
+      switch (name) {
+        case 'Aged Brie':
           if (item.quality < 50) {
             item.quality = item.quality + 1
           }
+          break;
+        case 'Backstage passes to a TAFKAL80ETC concert':
+          if (item.quality < 50) {
+            item.quality = item.quality + 1
+
+            if (item.sellIn < 11) {
+              item.quality = item.quality + 1
+            }
+            if (item.sellIn < 6) {
+                item.quality = item.quality + 1
+            }
+          }
+          break;
+        default:
+          // Normal items
+          if (item.quality > 0) {
+            item.quality = item.quality - 1
+          }
+          break;
+      }
+
+      item.sellIn = item.sellIn - 1;
+
+      if (item.sellIn < 0) {
+        // again, a switch seem more appropriate and easy to read to handle this kind of logic
+        switch (name) {
+          case 'Aged Brie':
+            if (item.quality < 50) {
+              item.quality = item.quality + 1
+            }
+            break;
+          case 'Backstage passes to a TAFKAL80ETC concert':
+            item.quality = 0
+            break;
+          default:
+            // Normal items
+            if (item.quality > 0) {
+              item.quality = item.quality - 1
+            }
+            break;
         }
       }
+
       return item
     })
   }
