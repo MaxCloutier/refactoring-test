@@ -9,7 +9,7 @@ function runTests(test) {
     expect(gildedRose.items[0].name).to.equal(name);
 
     expectedResultsByDay.forEach(({ sellIn, quality }, index) => {
-      it(`Day ${index + 1} should return sellIn: ${quality} and quality: ${quality}`, function() {
+      it(`Day ${index + 1} should return sellIn: ${sellIn} and quality: ${quality}`, function() {
         const items = gildedRose.updateQuality();
 
         expect(items[0].sellIn).to.equal(sellIn);
@@ -56,38 +56,40 @@ describe('Gilded Rose', function () {
     // -1 to quality and sellIn each day
     // -2 to quality when sellIn < 0
     // quality never < 0
-    const tests = [{
-      item: {
-        name: "+5 Dexterity Vest",
-        sellIn: 5,
-        quality: 10,
+    const tests = [
+      {
+        item: {
+          name: "+5 Dexterity Vest",
+          sellIn: 5,
+          quality: 10,
+        },
+        expectedResultsByDay: [
+          {sellIn: 4, quality: 9},
+          {sellIn: 3, quality: 8},
+          {sellIn: 2, quality: 7},
+          {sellIn: 1, quality: 6},
+          {sellIn: 0, quality: 5},
+          {sellIn: -1, quality: 3},
+          {sellIn: -2, quality: 1},
+          {sellIn: -3, quality: 0},
+          {sellIn: -4, quality: 0},
+        ]
       },
-      expectedResultsByDay: [
-        {sellIn: 4, quality: 9},
-        {sellIn: 3, quality: 8},
-        {sellIn: 2, quality: 7},
-        {sellIn: 1, quality: 6},
-        {sellIn: 0, quality: 5},
-        {sellIn: -1, quality: 3},
-        {sellIn: -2, quality: 1},
-        {sellIn: -3, quality: 0},
-        {sellIn: -4, quality: 0},
-      ]
-    },
-    {
-      item: {
-        name: "Elixir of the Mongoose",
-        sellIn: 10,
-        quality: 20,
-      },
-      expectedResultsByDay: [
-        {sellIn: 9, quality: 19},
-        {sellIn: 8, quality: 18},
-        {sellIn: 7, quality: 17},
-        {sellIn: 6, quality: 16},
-        {sellIn: 5, quality: 15},
-      ]
-    }]
+      {
+        item: {
+          name: "Elixir of the Mongoose",
+          sellIn: 10,
+          quality: 20,
+        },
+        expectedResultsByDay: [
+          {sellIn: 9, quality: 19},
+          {sellIn: 8, quality: 18},
+          {sellIn: 7, quality: 17},
+          {sellIn: 6, quality: 16},
+          {sellIn: 5, quality: 15},
+        ]
+      }
+    ];
 
     tests.forEach(runTests);
   });
@@ -97,23 +99,76 @@ describe('Gilded Rose', function () {
     // +2 to quality when sellIn < 0 ? Not specified in the rules, but it makes sense since quality of a normal product decreases by two
     // quality never > 50
 
-    const tests = [{
-      item: {
-        name: "Aged Brie",
-        sellIn: 5,
-        quality: 42,
+    const tests = [
+      {
+        item: {
+          name: "Aged Brie",
+          sellIn: 5,
+          quality: 42,
+        },
+        expectedResultsByDay: [
+          {sellIn: 4, quality: 43},
+          {sellIn: 3, quality: 44},
+          {sellIn: 2, quality: 45},
+          {sellIn: 1, quality: 46},
+          {sellIn: 0, quality: 47},
+          {sellIn: -1, quality: 49},
+          {sellIn: -2, quality: 50},
+          {sellIn: -3, quality: 50}
+        ]
+      }
+    ];
+
+    tests.forEach(runTests);
+  });
+
+  describe('Backstage passes to a TAFKAL80ETC concert', function () {
+    // +1 to quality and -1 sellIn each day
+    // +2 to quality when sellIn <= 10
+    // +3 to quality when sellIn <= 5
+    // quality = 0 when sellIn < 0
+    // quality never > 50
+
+    const tests = [
+      {
+        item: {
+          name: "Backstage passes to a TAFKAL80ETC concert",
+          sellIn: 15,
+          quality: 10,
+        },
+        expectedResultsByDay: [
+          {sellIn: 14, quality: 11},
+          {sellIn: 13, quality: 12},
+          {sellIn: 12, quality: 13},
+          {sellIn: 11, quality: 14},
+          {sellIn: 10, quality: 15},
+          {sellIn: 9, quality: 17},
+          {sellIn: 8, quality: 19},
+          {sellIn: 7, quality: 21}
+        ]
       },
-      expectedResultsByDay: [
-        {sellIn: 4, quality: 43},
-        {sellIn: 3, quality: 44},
-        {sellIn: 2, quality: 45},
-        {sellIn: 1, quality: 46},
-        {sellIn: 0, quality: 47},
-        {sellIn: -1, quality: 49},
-        {sellIn: -2, quality: 50},
-        {sellIn: -3, quality: 50}
-      ]
-    }]
+      {
+        item: {
+          name: "Backstage passes to a TAFKAL80ETC concert",
+          sellIn: 11,
+          quality: 30,
+        },
+        expectedResultsByDay: [
+          {sellIn: 10, quality: 31},
+          {sellIn: 9, quality: 33},
+          {sellIn: 8, quality: 35},
+          {sellIn: 7, quality: 37},
+          {sellIn: 6, quality: 39},
+          {sellIn: 5, quality: 41},
+          {sellIn: 4, quality: 44},
+          {sellIn: 3, quality: 47},
+          {sellIn: 2, quality: 50},
+          {sellIn: 1, quality: 50},
+          {sellIn: 0, quality: 50},
+          {sellIn: -1, quality: 0}
+        ]
+      }
+    ];
 
     tests.forEach(runTests);
   });
