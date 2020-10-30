@@ -2,11 +2,8 @@ import { expect } from 'chai';
 import { Item, GildedRose } from '../app/gilded-rose';
 
 describe('Gilded Rose', function () {
-
     /* Items from text tests */
-    // new Item("+5 Dexterity Vest", 10, 20), //
     // new Item("Aged Brie", 2, 0), //
-    // new Item("Elixir of the Mongoose", 5, 7), //
     // new Item("Sulfuras, Hand of Ragnaros", 0, 80), //
     // new Item("Sulfuras, Hand of Ragnaros", -1, 80),
     // new Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
@@ -37,10 +34,53 @@ describe('Gilded Rose', function () {
     //    Quality drops to 0 after the concert
     //  - "Conjured" items degrade in Quality twice as fast as normal items
 
-    it('should foo', function() {
-        const gildedRose = new GildedRose([ new Item('foo', 0, 0) ]);
-        const items = gildedRose.updateQuality();
-        expect(items[0].name).to.equal('fixme');
-    });
+    describe('General items', function () {
+      const tests = [{
+        item: {
+          name: "+5 Dexterity Vest",
+          sellIn: 5,
+          quality: 10,
+        },
+        expectedResultsByDay: [
+          {sellIn: 4, quality: 9},
+          {sellIn: 3, quality: 8},
+          {sellIn: 2, quality: 7},
+          {sellIn: 1, quality: 6},
+          {sellIn: 0, quality: 5},
+          {sellIn: -1, quality: 3},
+          {sellIn: -2, quality: 1},
+          {sellIn: -3, quality: 0},
+          {sellIn: -4, quality: 0},
+        ]
+      },
+      {
+        item: {
+          name: "Elixir of the Mongoose",
+          sellIn: 10,
+          quality: 20,
+        },
+        expectedResultsByDay: [
+          {sellIn: 9, quality: 19},
+          {sellIn: 8, quality: 18},
+          {sellIn: 7, quality: 17},
+          {sellIn: 6, quality: 16},
+          {sellIn: 5, quality: 15},
+        ]
+      }]
 
+      tests.forEach(test => {
+        describe(`Should test ${test.item.name}`, function() {
+          const { item: { name, sellIn, quality }, expectedResultsByDay } = test
+            const gildedRose = new GildedRose([ new Item(name, sellIn, quality) ]);
+            expect(gildedRose.items[0].name).to.equal(name);
+            expectedResultsByDay.forEach(({ sellIn, quality }, index) => {
+              it(`Day ${index + 1} should return sellIn: ${quality} and quality: ${quality}`, function() {
+                const items = gildedRose.updateQuality();
+                expect(items[0].sellIn).to.equal(sellIn);
+                expect(items[0].quality).to.equal(quality);
+              });
+            });
+        });
+      });
+    });
 });
